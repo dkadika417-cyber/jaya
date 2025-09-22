@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jaya Cell - Pulsa & Kuota Online</title>
+  <style>
+    body {font-family: Arial, sans-serif;margin:0;padding:0;background:#f0f8ff;color:#333;}
+    header {background:linear-gradient(90deg,#0077c8,#00b4db);padding:15px;color:white;text-align:center;}
+    nav {display:flex;justify-content:center;gap:20px;margin-top:10px;}
+    nav a {color:white;text-decoration:none;font-weight:bold;}
+    .container {max-width:1000px;margin:20px auto;padding:20px;}
+    h2 {text-align:center;color:#0077c8;}
+    .form-box {text-align:center;margin-bottom:20px;}
+    .form-box input {padding:10px;width:250px;border:1px solid #0077c8;border-radius:8px;}
+    .products {display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;}
+    .card {background:white;border-radius:12px;padding:15px;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,0.1);}
+    .card img {width:80px;height:auto;margin-bottom:10px;}
+    .price {color:#0077c8;font-weight:bold;margin:8px 0;}
+    button {margin-top:8px;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;font-weight:bold;}
+    .wa {background:#25d366;color:white;}
+    .dana {background:#0077c8;color:white;}
+    footer {background:#0077c8;color:white;text-align:center;padding:20px;margin-top:40px;}
+    footer a {color:white;margin:0 8px;text-decoration:none;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Jaya Cell</h1>
+    <p>Pulsa & Kuota Online - Cepat & Aman</p>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Produk</a>
+      <a href="#">Tentang Kami</a>
+      <a href="#">Syarat & Ketentuan</a>
+      <a href="#">Kontak</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Isi Pulsa Semua Operator</h2>
+    <div class="form-box">
+      <input type="text" id="nomor" placeholder="Masukkan Nomor HP">
+    </div>
+    <div class="products" id="produk"></div>
+  </div>
+
+  <footer>
+    <p>© 2025 Jaya Cell. Semua Hak Dilindungi.</p>
+    <p>Ikuti kami:
+      <a href="#">Facebook</a> | 
+      <a href="#">Instagram</a> | 
+      <a href="#">Twitter</a>
+    </p>
+  </footer>
+
+<script>
+const produkData = [
+  {operator:"Telkomsel",img:"https://upload.wikimedia.org/wikipedia/commons/1/1e/Telkomsel_2021_icon.svg"},
+  {operator:"XL",img:"https://upload.wikimedia.org/wikipedia/commons/0/01/XL_logo_2016.svg"},
+  {operator:"Axis",img:"https://upload.wikimedia.org/wikipedia/commons/4/4e/AXIS_logo.svg"},
+  {operator:"Indosat",img:"https://upload.wikimedia.org/wikipedia/commons/5/5e/Indosat_Ooredoo_logo.svg"},
+  {operator:"Tri",img:"https://upload.wikimedia.org/wikipedia/commons/6/65/3_%28logo%29.svg"},
+  {operator:"Smartfren",img:"https://upload.wikimedia.org/wikipedia/commons/8/8f/Smartfren_logo.svg"}
+];
+
+const nominalPulsa = [5000,10000,20000,25000,50000,100000];
+const produkEl = document.getElementById("produk");
+
+produkData.forEach(op=>{
+  nominalPulsa.forEach(n=>{
+    let harga = n + 2000;
+    let card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${op.img}" alt="${op.operator}">
+      <h3>${op.operator} ${n/1000}K</h3>
+      <div class="price">Rp ${harga.toLocaleString("id-ID")}</div>
+      <button class="wa" onclick="orderWA('${op.operator}',${n},${harga})">Pesan via WhatsApp</button>
+      <button class="dana" onclick="orderDana('${op.operator}',${n},${harga})">Bayar via Dana</button>
+    `;
+    produkEl.appendChild(card);
+  });
+});
+
+function orderWA(operator,nominal,harga){
+  const nomor = document.getElementById("nomor").value.trim();
+  if(!nomor){alert("Masukkan nomor HP terlebih dahulu!");return;}
+  let text = `Halo Admin Jaya Cell,%0ASaya ingin beli pulsa:%0AOperator: ${operator}%0ANominal: ${nominal.toLocaleString("id-ID")}%0ANomor Tujuan: ${nomor}%0AHarga: Rp ${harga.toLocaleString("id-ID")}`;
+  window.open(`https://api.whatsapp.com/send/?phone=%2B6281910958623&text=${text}&type=phone_number&app_absent=0`);
+}
+
+function orderDana(operator,nominal,harga){
+  const nomor = document.getElementById("nomor").value.trim();
+  if(!nomor){alert("Masukkan nomor HP terlebih dahulu!");return;}
+  alert(`Silakan transfer Rp ${harga.toLocaleString("id-ID")} ke Dana: 083143863336\n\nDetail Pesanan:\nOperator: ${operator}\nNominal: ${nominal.toLocaleString("id-ID")}\nNomor Tujuan: ${nomor}\n\nSetelah transfer, konfirmasi via WhatsApp admin.`);
+}
+</script>
+</body>
+</html>
